@@ -7,7 +7,7 @@ def print_matrix_integer(matrix=[[]]):
         for col in row:
             if i < ln:
                 print("{:d} ".format(col), end="")
-                i=i+1
+                i = i+1
             else:
                 print("{:d}".format(col), end="")
         print("")
