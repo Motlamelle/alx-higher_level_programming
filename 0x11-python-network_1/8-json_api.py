@@ -1,19 +1,23 @@
 #!/usr/bin/python3
-"""Takes in a letter and sends a POST request to
-http://0.0.0.0:5000/search_user with the letter as a parameter"""
+"""search an API"""
+
+import requests
+import sys
+url = "http://0.0.0.0:5000/search_user"
 
 
-if __name__ == "__main__":
-    import requests
-    import sys
-
-    q = sys.argv[1] if len(sys.argv) > 1 else ""
-    r = requests.post('http://0.0.0.0:5000/search_user', data={'q': q})
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        search = {'q': '""'}
+    else:
+        search = {'q': sys.argv[1]}
+    request = requests.post(url, search)
     try:
-        dic = r.json()
-        if dic == {}:
+        search = request.json()
+    except ValueError:
+        print("Not a valid JSON")
+    else:
+        if hasattr(search, '__contains__') and len(search) < 1:
             print('No result')
         else:
-            print("[{}] {}".format(dic.get('id'), dic.get('name')))
-    except ValueError:
-       print('Not a valid JSON')
+            print('[{}] {}'.format(search['id'], search['name']))
